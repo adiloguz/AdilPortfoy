@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kusursuz Menü ve Şık Yetenekler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+  <style>
+    /* Genel Ayarlar */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      scroll-behavior: smooth;
+    }
+
+    h1, h2, h3 {
+      font-weight: bold;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Sabit Menü Butonu */
+    #menuBtn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 30px;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      z-index: 200;
+      transition: transform 0.3s, color 0.3s;
+    }
+
+    #menuBtn:hover {
+      transform: rotate(90deg);
+      color: #00ff87;
+    }
+
+    /* Tam Ekran Menü */
+    .fullscreen-menu {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 100;
+      opacity: 0;
+      transform: translateY(-100%);
+      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.5s ease;
+    }
+
+    .fullscreen-menu.open {
+      display: flex;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fullscreen-menu a {
+      font-size: 2rem;
+      color: white;
+      margin: 1.5rem;
+      text-align: center;
+      transition: color 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeInUp 0.5s ease forwards;
+      animation-delay: calc(var(--order) * 0.1s);
+    }
+
+    .fullscreen-menu a:hover {
+      color: #00ff87;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fullscreen-menu .closebtn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 36px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Hero Bölümü */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #00ff87, #60efff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .hero button {
+      padding: 0.8rem 1.5rem;
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .hero button:hover {
+      background: #00ff87;
+      color: #0f0c29;
+    }
+
+    .hero button a {
+      color: inherit;
+    }
+
+    /* Şık Yetenekler Bölümü */
+    #skills {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .skills-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .skill-card {
+      width: 250px;
+      padding: 2rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      text-align: center;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .skill-card:hover {
+      transform: translateY(-10px) rotateY(10deg);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .skill-card img {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 1rem;
+    }
+
+    .skill-card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    /* Hakkımda Bölümü */
+    #about {
+      padding: 5rem 2rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .about-container {
+      margin: 0 auto;
+      max-width: 800px;
+      padding: 2rem;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .about-container h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: #00ff87;
+    }
+
+    .about-container p {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    
+    /* Genel Ayarlar */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  color: #fff;
+}
+
+/* Profil Kartı */
+#profile-card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.profile-card {
+  width: 350px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  text-align: center;
+  overflow: hidden;
+  padding: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.profile-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Profil Resmi */
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 0 auto 20px;
+  border: 5px solid rgba(255, 255, 255, 0.2);
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.profile-image:hover img {
+  transform: scale(1.1);
+}
+
+/* Kullanıcı Bilgileri */
+.profile-info h2 {
+  font-size: 1.8rem;
+  margin: 10px 0;
+  color: #00ff87;
+}
+
+.profile-info p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Biyografi */
+.profile-bio p {
+  font-size: 0.9rem;
+  margin: 15px 0;
+  line-height: 1.6;
+}
+
+/* Yetenekler */
+.skills h3 {
+  margin: 15px 0;
+  font-size: 1.2rem;
+  color: #00ff87;
+}
+
+.skills ul {
+  list-style: none;
+  padding: 0;
+}
+
+.skills li {
+  margin: 10px 0;
+}
+
+.skill-bar {
+  background: rgba(255, 255, 255, 0.2);
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.skill-level {
+  background: #00ff87;
+  height: 100%;
+  transition: width 0.5s ease;
+}
+
+/* Sosyal Medya */
+.profile-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.profile-links a {
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.profile-links a:hover {
+  color: #00ff87;
+  transform: scale(1.2);
+}
+
+/* Düğmeler */
+.profile-actions {
+  margin-top: 20px;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.btn.primary {
+  background: #00ff87;
+  color: #24243e;
+}
+
+.btn.primary:hover {
+  background: #00cc6a;
+}
+
+.btn.secondary {
+  background: transparent;
+  color: #00ff87;
+  border: 2px solid #00ff87;
+}
+
+.btn.secondary:hover {
+  background: #00ff87;
+  color: #24243e;
+}
+    
+    
+    
+  </style>
+</head>
+<body>
+  <!-- Menü Butonu -->
+  <button id="menuBtn" onclick="toggleMenu()">&#9776;</button>
+
+  <!-- Tam Ekran Menü -->
+  <div id="myMenu" class="fullscreen-menu" onclick="closeOnBackgroundClick(event)">
+    <span class="closebtn" onclick="closeMenu()">&times;</span>
+    <a href="#about" onclick="closeMenu()">Hakkımda</a>
+    <a href="#profile-card" onclick="closeMenu()">Profil</a>
+    <a href="#projects" onclick="closeMenu()">Projeler</a>
+  </div>
+  
+    <!-- Hero -->
+  <div class="hero">
+    <h1>Merhaba, Ben Adil</h1>
+    <p>Kusursuz menü ve şık yetenekler deneyimini keşfedin!</p>
+    <button><a href="#skills">Yeteneklerimi Gör</a></button>
+  </div>
+  
+  
+  <section id="profile-card">
+  <div class="profile-card">
+    <!-- Profil Resmi -->
+    <div class="profile-image">
+      <img src="img/profile.jpg" alt="Profil Resmi">
+    </div>
+
+    <!-- Kullanıcı Bilgileri -->
+    <div class="profile-info">
+      <h2>Adil Oğuz</h2>
+      <p>Mobil Uygulama geliştiricisi <br>& Web geliştirici</p>
+    </div>
+
+    <!-- Biyografi -->
+    <div class="profile-bio">
+      <p></p>
+    </div>
+
+    <!-- Yetenekler -->
+    <div class="skills">
+      <h3>Yeteneklerim</h3>
+      <ul>
+        <li>
+          <span>HTML</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 90%;"></div>
+          </div>
+        </li>
+        <li>
+          <span>CSS</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 85%;"></div>
+          </div>
+        </li>
+        <li>
+          <span>JavaScript</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 70%;"></div>
+          </div>
+        </li>
+        <li>
+          <span>Python</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 85%;"></div>
+          </div>
+        </li>
+        <li>
+          <span>Kotlin</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 90%;"></div>
+          </div>
+        </li>
+        <li>
+          <span>Flutter</span>
+          <div class="skill-bar">
+            <div class="skill-level" style="width: 95%;"></div>
+          </div>
+        </li>
+        
+      </ul>
+    </div>
+
+    <!-- Aksiyon Düğmeleri -->
+    <div class="profile-actions">
+      <a href="#" class="btn primary">Mesaj Gönder</a>
+      <a href="#" class="btn secondary">CV İndir</a>
+    </div>
+  </div>
+</section>
+
+  <!-- Hakkımda Bölümü -->
+  <section id="about">
+    <div class="about-container">
+      <h2>Hakkımda</h2>
+      <p>Merhaba! modern ve etkileyici web tasarımları yaratma konusunda tutkulu bir geliştiriciyim. Kullanıcı deneyimini önceliklendiren, yenilikçi ve şık tasarımlar oluşturmayı seviyorum.</p>
+      <p>Deneyimlerim arasında HTML5, CSS3, JavaScript ve React bulunmaktadır. Ayrıca tasarım trendlerini takip ederek projelerimde estetik ve işlevselliği bir araya getirmeye özen gösteriyorum.</p>
+    </div>
+  </section>
+  
+  <section id="projects" class="glass-section">
+  <h2>Projelerim</h2>
+  <div class="project-container">
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/project1.jpg" alt="Proje 1">
+        <div class="project-overlay">
+          <div class="project-tech">
+            <span>HTML</span>
+            <span>CSS</span>
+            <span>JavaScript</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <h3>Profil kartı uygulaması</h3>
+        <p>Bu proje, Kullanıcıların kişisel bilgilerini ve sosyal medya hesaplarını düzenli bir şekilde sergileyebileceği şık ve özelleştirilebilir bir profil kartı uygulaması.</p>
+        <div class="project-links">
+          <a href="https://adiloguz.github.io/ProfilKart-0/" class="project-link"><i class="fas fa-eye"></i> Demo</a>
+          <a href="https://github.com/adiloguz/ProfilKart-0" class="project-link"><i class="fab fa-github"></i> Kaynak Kod</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-image">
+        <img src="img/project3.jpg" alt="Proje 2">
+        <div class="project-overlay">
+          <div class="project-tech">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <h3>Hava durumı uygulaması</h3>
+        <p>Bu proje, Kullanıcıların anlık hava durumu bilgilerini öğrenebileceği, basit ve hızlı erişilebilir bir uygulama.</p>
+        <div class="project-links">
+          <a href="https://adiloguz.github.io/hava-durumuUygulamas-/" class="project-link"><i class="fas fa-eye"></i> Demo</a>
+          <a href="https://github.com/adiloguz/hava-durumuUygulamas-" class="project-link"><i class="fab fa-github"></i> Kaynak Kod</a>
+        </div>
+      </div>
+    </div>
+    
+        <div class="project-card">
+      <div class="project-image">
+        <img src="img/project2.jpg" alt="Proje 2">
+        <div class="project-overlay">
+          <div class="project-tech">
+            <span>React</span>
+            <span>Node.js</span>
+            <span>MongoDB</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-info">
+        <h3>Link ağacı uygulaması</h3>
+        <p>Bu proje, Link’lerinizi tek bir sayfada kolayca paylaşmanızı sağlayan özelleştirilebilir bir uygulama.</p>
+        <div class="project-links">
+          <a href="#" class="project-link"><i class="fas fa-eye"></i> Demo</a>
+          <a href="#" class="project-link"><i class="fab fa-github"></i> Kaynak Kod</a>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+  </div>
+</section>
+
+<style>
+/* Projeler Bölümü */
+.glass-section {
+  padding: 60px 30px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  margin: 30px;
+}
+
+.glass-section h2 {
+  text-align: center;
+  color: #fff;
+  font-size: 2.5rem;
+  margin-bottom: 40px;
+  position: relative;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.glass-section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #00bcd4, #2196f3);
+  border-radius: 3px;
+}
+
+.project-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  padding: 20px;
+}
+
+.project-card {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  transition: all 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.project-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.project-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.project-tech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  justify-content: center;
+}
+
+.project-tech span {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: #fff;
+  backdrop-filter: blur(5px);
+}
+
+.project-info {
+  padding: 25px;
+  text-align: center;
+}
+
+.project-info h3 {
+  color: #fff;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.project-info p {
+  color: #ddd;
+  font-size: 1rem;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.project-links {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.project-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 500;
+  padding: 8px 20px;
+  border-radius: 25px;
+  background: linear-gradient(45deg, #00bcd4, #2196f3);
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.project-link i {
+  font-size: 1rem;
+}
+
+/* Hover Efektleri */
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.3);
+}
+
+.project-card:hover .project-image img {
+  transform: scale(1.1);
+}
+
+.project-card:hover .project-overlay {
+  opacity: 1;
+}
+
+.project-link:hover {
+  background: linear-gradient(45deg, #2196f3, #00bcd4);
+  transform: scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 188, 212, 0.3);
+}
+
+/* Responsive Tasarım */
+@media (max-width: 768px) {
+  .glass-section {
+    padding: 80px 5px;
+    margin: 15px;
+  }
+
+  .glass-section h2 {
+    font-size: 2rem;
+  }
+
+  .project-container {
+    grid-template-columns: 1fr;
+    gap: 50px;
+  }
+
+  .project-info h3 {
+    font-size: 1.4rem;
+  }
+}
+</style>
+
+  
+
+
+  <footer class="footer">
+    <div class="footer-content">
+        <div class="social-icons">
+            <a href="#" target="_blank" class="social-icon facebook">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" target="_blank" class="social-icon twitter">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a href="https://www.instagram.com/adilll7221/profilecard/?igsh=Nm5laXkwMjExYzZo" target="_blank" class="social-icon instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" target="_blank" class="social-icon linkedin">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+        </div>
+
+        <div class="copyright">
+            <p>© 2024 Adil Oğuz. Tüm Hakları Saklıdır.</p>
+        </div>
+    </div>
+</footer>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
+    .footer {
+        background: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(20px);
+        border-radius: 15px;
+        padding: 40px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        position: relative;
+        z-index: 10;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .footer-content {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .social-icons {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .social-icon {
+        color: white;
+        font-size: 24px;
+        text-decoration: none;
+        background: rgba(255, 255, 255, 0.1);
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.2);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 50px;
+        margin-bottom: 30px;
+    }
+
+    .link-column {
+        text-align: center;
+    }
+
+    .link-column h4 {
+        margin-bottom: 15px;
+        color: rgba(255, 255, 255, 0.9);
+        font-weight: 600;
+    }
+
+    .link-column a {
+        display: block;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .link-column a:hover {
+        color: white;
+        transform: translateX(5px);
+    }
+
+    .copyright {
+        font-size: 14px;
+        opacity: 0.7;
+    }
+
+    /* Responsive Tasarım */
+    @media (max-width: 768px) {
+        .footer {
+            padding: 30px;
+        }
+
+        .footer-links {
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .social-icons {
+            gap: 20px;
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+    }
+</style>
+  
+
+  <script>
+    const menu = document.getElementById("myMenu");
+    const menuBtn = document.getElementById("menuBtn");
+
+    function toggleMenu() {
+      menu.classList.toggle("open");
+
+      if (menu.classList.contains("open")) {
+        const links = menu.querySelectorAll("a");
+        links.forEach((link, index) => {
+          link.style.setProperty("--order", index + 1);
+        });
+      }
+    }
+
+    function closeMenu() {
+      menu.classList.remove("open");
+    }
+
+    function closeOnBackgroundClick(event) {
+      if (event.target === menu) closeMenu();
+    }
+  </script>
+</body>
+</html>
